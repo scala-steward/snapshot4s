@@ -16,7 +16,13 @@
 
 package snapshot4s
 
-private object ErrorMessages {
-  val nonExistent: String = "Snapshot does not exist. Run 'snapshot4sPromote' to create it."
-  val failure: String     = "Snapshot not equal. Run 'snapshot4sPromote' to update it."
+import java.io.File
+
+/** Typeclass for build-tool specific file operations. */
+private trait FileIO {
+  def read(file: File): String
+  def write(file: File, contents: String): Unit
+  def delete(file: File): Unit
+  def relativize(base: File, file: File): String
+  def listMatchingFiles(base: File, matcher: File => Boolean): Seq[File]
 }
