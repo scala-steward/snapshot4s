@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-package snapshot4s
+package simple
 
-private object ErrorMessages {
-  val nonExistent: String = "Snapshot does not exist. Run 'snapshot4sPromote' to create it."
-  val failure: String     = "Snapshot not equal. Run 'snapshot4sPromote' to update it."
+import weaver.*
+import snapshot4s.weaver.SnapshotExpectations
+import snapshot4s.generated.snapshotConfig
+
+object OtherTest extends SimpleIOSuite with SnapshotExpectations {
+
+  test("inline") {
+    assertInlineSnapshot(1, 2)
+  }
 }
