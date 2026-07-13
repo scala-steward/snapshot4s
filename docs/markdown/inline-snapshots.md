@@ -86,7 +86,7 @@ assertInlineSnapshot(found = Person("Alice"), Person("Alice"))
 assertInlineSnapshot(found = Nil, List(Person("Alice"), Person("Bob")))
 ```
 
-## Unsupported data types
+### Unsupported data types
 
 It should not be used on variables.
 
@@ -102,3 +102,28 @@ It fails to compile for values that can't be represented as source code.
 assertInlineSnapshot(found = new Object(), new Object())
 ```
 
+## Updating snapshots
+
+You can update snapshot values using `sbt test` and `sbt snapshot4sPromote`.
+
+If your datatype changes in structure, you can use [scalafix](https://scalacenter.github.io/scalafix/) to reset your snapshots.
+
+For example, suppose you wish to add a `version` field to `Config`:
+
+```diff
+ case class Config(
+   environment: String, 
+   region: String, 
++  version: String
+ )
+```
+
+If you make the change as-is, your tests will fail to compile and you will not be able to update them with `snapshot4sPromote`.
+
+You can update your snapshots efficiently using the following steps:
+ - *Before* making the code change, replace all snapshot values with `???`. You can use the `ResetSnapshots` scalafix rule.
+    ```
+    sbt scalafixAll --rules=github:siriusxm/snapshot4s/ResetSnapshots
+    ```
+ - Make your code change.
+ - Your snapshot tests will compile. Regenerate snapshots with `sbt test` and `sbt snapshot4sPromote`.

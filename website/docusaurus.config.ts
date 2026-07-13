@@ -109,7 +109,7 @@ const config: Config = {
       copyright: `Copyright © ${new Date().getFullYear()} SiriusXM.`,
     },
     prism: {
-      additionalLanguages: ['java', 'scala'],
+      additionalLanguages: ['java', 'scala', 'diff'],
       theme: prismThemes.github,
       darkTheme: prismThemes.oneDark,
     },
